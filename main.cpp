@@ -25,9 +25,13 @@ int main(int argc, char** argv)
         auto cur_frame = yoloDetector.HumanDetector::detect();
         if(true == yoloDetector.isEnd())
             break;
-        cv::namedWindow("Real-time Display", cv::WINDOW_NORMAL);
-        cv::imshow("Real-time Display", cur_frame);
-        cv::waitKey(50);
+        if (false == config_data["disable_gui"].get<bool>())
+        {
+            cv::namedWindow("Real-time Display", cv::WINDOW_NORMAL);
+            cv::imshow("Real-time Display", cur_frame);
+            cv::waitKey(50);   
+        }
+        
     }
 
     auto psave_images = yoloDetector.getImages();

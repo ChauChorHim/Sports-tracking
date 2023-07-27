@@ -7,12 +7,13 @@
 
 namespace st
 {
-    st::HumanDetector::HumanDetector(cv::VideoCapture& video_capturer, const cv::Size& bev_map_size) : video_capturer_(video_capturer), end_(false), cur_frame_id_(0) {
+    st::HumanDetector::HumanDetector(cv::VideoCapture& video_capturer, const nlohmann::json& config_data) : video_capturer_(video_capturer), end_(false), cur_frame_id_(0) {
         video_capturer_.read(cur_frame_);
         assertm(!cur_frame_.empty(), "Error: unable to read the first frame\n");
-        if (bev_map_size != cv::Size(0, 0))
+        if (true == config_data["enable_bev"].get<bool>())
         {
-            bev_act_ = true;
+            auto bev_map_size = cv::Size(config_data["bev_map_size_w"].get<int>(), config_data["bev_map_size_h"].get<int>());
+            enable_bev_ = true;
             map_BEV_ = cv::Mat(bev_map_size, CV_8UC3);
             std::vector<cv::Point> pts({{1, 1}, {42, 1}, {305, 1}, {568, 1}, {609, 1}, {1, 72}, {609, 72}, {1, 460}, {305, 460}, {609, 460},
             {1, 670}, {609, 670}, {1, 880}, {305, 880}, {609, 880}, {1, 1268}, {609, 1268}, {1, 1339}, {42, 1339}, {305, 1339}, {568, 1339}, {609, 1339}});
@@ -62,7 +63,7 @@ namespace st
 
         this->extractBB();
         
-        if (bev_act_)
+        if (enable_bev_)
         {
             attachBEV();     
         }
@@ -118,7 +119,7 @@ namespace st
     }
 
     st::YOLOV5Detector::YOLOV5Detector(cv::VideoCapture& video_capturer_, const nlohmann::json& config_data) : 
-        HumanDetector(video_capturer_, cv::Size(config_data["bev_map_size_w"].get<int>(), config_data["bev_map_size_h"].get<int>())), 
+        HumanDetector(video_capturer_, config_data), 
         input_width_(config_data["input_width_"].get<float>()),
         input_height_(config_data["input_height_"].get<float>()),
         score_threshold_(config_data["score_threshold_"].get<float>()),

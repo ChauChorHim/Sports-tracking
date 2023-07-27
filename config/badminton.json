@@ -10,5 +10,7 @@
     "nms_threshold_": 0.45,
     "confidence_threshold_": 0.45,
     "bev_map_size_w": 610,
-    "bev_map_size_h": 1340
+    "bev_map_size_h": 1340,
+    "enable_bev": true,
+    "disable_gui": false
 }

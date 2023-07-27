@@ -22,7 +22,7 @@ namespace st
     class HumanDetector
     {
         public:
-            HumanDetector(cv::VideoCapture& video_capturer, const cv::Size& bev_map_size = cv::Size(0, 0));
+            HumanDetector(cv::VideoCapture& video_capturer, const nlohmann::json& config_data);
             virtual ~HumanDetector() {}
             cv::Mat detect();
             const bool isEnd() { return end_; }
@@ -43,7 +43,7 @@ namespace st
             bool end_;
             std::vector<cv::Mat> images_;
             cv::Mat map_BEV_;
-            bool bev_act_ = false;
+            bool enable_bev_ = false;
             cv::Mat perspectiveMatrix;
     };
 
