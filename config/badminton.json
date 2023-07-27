@@ -1,0 +1,14 @@
+{
+    "path_to_project": "/home/sports-tracking/",
+    "path_to_video": "video/Badminton_Clip.mp4",
+    "path_to_onnx": "weights/YOLOv5s.onnx",
+    "path_to_save_video": "results/playback.avi",
+    "path_to_save_bbs": "results/bbs.json",
+    "input_width_": 640.0,
+    "input_height_": 640.0,
+    "score_threshold_": 0.5,
+    "nms_threshold_": 0.45,
+    "confidence_threshold_": 0.45,
+    "bev_map_size_w": 610,
+    "bev_map_size_h": 1340
+}
