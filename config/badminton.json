@@ -8,9 +8,10 @@
     "input_height_": 640.0,
     "score_threshold_": 0.5,
     "nms_threshold_": 0.45,
-    "confidence_threshold_": 0.45,
-    "bev_map_size_w": 610,
-    "bev_map_size_h": 1340,
+    "confidence_threshold_": 0.45, 
+    "disable_gui": false,
     "enable_bev": true,
-    "disable_gui": false
+    "path_to_bev_map": "config/badminton_bev_map.json",
+    "bev_map_size_w": 610,
+    "bev_map_size_h": 1340
 }

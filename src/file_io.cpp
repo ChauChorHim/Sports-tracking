@@ -9,13 +9,7 @@ namespace st
         cv::VideoCapture tmp(path_to_video);
         assertm(tmp.isOpened(), "Error: unable to open the video\n");
         video_capturer = std::move(tmp);
-        return;
     } 
-
-    void saveFrame(const cv::Mat& cur_frame, const std::string& filename, uint8_t jpeg_quality)
-    {
-        cv::imwrite(filename, cur_frame, {cv::IMWRITE_JPEG_QUALITY, jpeg_quality});
-    }
 
     void saveVideo(const std::shared_ptr<std::vector<cv::Mat>>& save_images, const std::string& path_to_save_video)
     {
@@ -26,7 +20,7 @@ namespace st
         cv::Size frameSize = (*save_images)[0].size();
 
         // Create the VideoWriter object
-        cv::VideoWriter videoWriter(path_to_save_video, codec, 25.0, frameSize);
+        cv::VideoWriter videoWriter(path_to_save_video, codec, 30.0, frameSize);
 
         // Check if the VideoWriter was initialized successfully
         assertm(videoWriter.isOpened(), "Error: Unable to open the VideoWriter for writing.");

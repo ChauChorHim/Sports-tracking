@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <ctime>
 
 namespace st
@@ -15,22 +16,25 @@ namespace st
             auto bev_map_size = cv::Size(config_data["bev_map_size_w"].get<int>(), config_data["bev_map_size_h"].get<int>());
             enable_bev_ = true;
             map_BEV_ = cv::Mat(bev_map_size, CV_8UC3);
-            std::vector<cv::Point> pts({{1, 1}, {42, 1}, {305, 1}, {568, 1}, {609, 1}, {1, 72}, {609, 72}, {1, 460}, {305, 460}, {609, 460},
-            {1, 670}, {609, 670}, {1, 880}, {305, 880}, {609, 880}, {1, 1268}, {609, 1268}, {1, 1339}, {42, 1339}, {305, 1339}, {568, 1339}, {609, 1339}});
-            cv::line(map_BEV_, pts[0], pts[4], cv::Scalar(255, 255, 255), 2);
-            cv::line(map_BEV_, pts[0], pts[17], cv::Scalar(255, 255, 255), 2);
-            cv::line(map_BEV_, pts[4], pts[21], cv::Scalar(255, 255, 255), 2);
-            cv::line(map_BEV_, pts[17], pts[21], cv::Scalar(255, 255, 255), 2);
-            cv::line(map_BEV_, pts[1], pts[18], cv::Scalar(255, 255, 255), 2);
-            cv::line(map_BEV_, pts[3], pts[20], cv::Scalar(255, 255, 255), 2);
-            cv::line(map_BEV_, pts[5], pts[6], cv::Scalar(255, 255, 255), 2);
-            cv::line(map_BEV_, pts[15], pts[16], cv::Scalar(255, 255, 255), 2);
-            cv::line(map_BEV_, pts[2], pts[8], cv::Scalar(255, 255, 255), 2);
-            cv::line(map_BEV_, pts[7], pts[9], cv::Scalar(255, 255, 255), 2);
-            cv::line(map_BEV_, pts[12], pts[14], cv::Scalar(255, 255, 255), 2);
-            cv::line(map_BEV_, pts[13], pts[19], cv::Scalar(255, 255, 255), 2);
-            cv::line(map_BEV_, pts[10], pts[11], cv::Scalar(0, 0, 255), 2);
-            cv::imwrite("/home/sports-tracking/results/badminton_court_map.png", map_BEV_);
+            std::string path_to_bev_map = config_data["path_to_project"].get<std::string>() + config_data["path_to_bev_map"].get<std::string>();
+            std::ifstream f(path_to_bev_map);
+            nlohmann::json map_BEV_json = nlohmann::json::parse(f);
+
+            uint8_t points_num = map_BEV_json["points_num"].get<uint8_t>();
+            std::vector<cv::Point> pts;
+            for (uint8_t idx = 1; idx <= points_num; ++idx)
+            {
+                std::ostringstream oss;
+                oss << static_cast<int>(idx);
+                std::string pt_name = "pt_" + oss.str();
+                int x = map_BEV_json[pt_name.c_str()]["x"].get<int>();
+                int y = map_BEV_json[pt_name.c_str()]["y"].get<int>();
+                pts.push_back({x, y});
+            }
+            for (const auto& connect: map_BEV_json["connects"])
+            {
+                cv::line(map_BEV_, pts[connect["head"].get<int>() - 1], pts[connect["tail"].get<int>() - 1], cv::Scalar(255, 255, 255), 2);
+            }
             std::cout << "BEV map activated, map_BEV_size: " << map_BEV_.size() << "\n";
 
             // From the image
