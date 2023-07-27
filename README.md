@@ -1,5 +1,5 @@
 # Sports-tracking
-This README is used for helping reader to install and build this project. Some interesting description for this project is [here](doc/documentation.md)
+This README is used for helping reader to install and build this project. Some interesting description for this project is [here](doc/documentation.md).
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -24,16 +24,18 @@ This README is used for helping reader to install and build this project. Some i
 </details>
 
 ## About The Project
-This project is used for the code challenge provided by [Swiss Timing](https://swisstiming.com/). The task of code challenge is to build a system to process a short sport video with moving athletes and extract the information of the athletes. This project is finished in a short time. THerefore, bugs or issues probably exist and please suggest changes by opening an issues.
+This project is used for the code challenge provided by [Swiss Timing](https://swisstiming.com/). The task of code challenge is to build a system to process a short sport video with moving athletes and extract the information of the athletes. The development environment is maintained using [Docker](https://www.docker.com/) and the project is built using [CMake](https://cmake.org/). [OpenCV](https://opencv.org/) is the major library used to bootstrap this project.
 
-### Built With
-The development environment is maintained using [Docker](https://www.docker.com/) and the project is built using [CMake](https://cmake.org/). [OpenCV](https://opencv.org/) is the major library used to bootstrap this project.
+![Results](doc/playback.gif)
+
+This project is finished in a short time. Therefore, bugs or issues probably exist and please suggest changes by opening an issues.
+
 
 ## Getting Started
 This instruction is mainly for users using Windows system. Users using other platform should follow a similar setup with differences in [setting GUI applications communication](https://cuneyt.aliustaoglu.biz/en/running-gui-applications-in-docker-on-windows-linux-mac-hosts/) between docker container and the host.
 ### Prerequisites
 * Download and install Docker
-* Dowoload and install [VcXsrv Windows X Server](https://sourceforge.net/projects/vcxsrv/), please read [doc](https://cuneyt.aliustaoglu.biz/en/running-gui-applications-in-docker-on-windows-linux-mac-hosts/
+* Dowoload and install [VcXsrv Windows X Server](https://sourceforge.net/projects/vcxsrv/), please read [doc](https://cuneyt.aliustaoglu.biz/en/running-gui-applications-in-docker-on-windows-linux-mac-hosts/)
 * Prepare a short sport video clip
 
 ### Installation
