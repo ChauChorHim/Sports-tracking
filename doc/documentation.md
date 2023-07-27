@@ -24,7 +24,11 @@ Athlete detection, or object detection is the core component of this system. In 
 In order to track multiple players, assigning different label id for different players, we record the centroid of each bounding box and compute the distance between two bounding box centroid. If the distance is smaller than a threshold, these two bounding boxes are labelled the same player id. If the distance is larger than the threshold, then a new player is discovered and the bounding box is assigned a new player id.
 
 ### Bird's eye view (BEV) map
-With the bounding box information, the coordinate of athlete's feet can be approximately obtained. By using the perspective matrix from camera image to BEV plane, the coordinate of the athlete under the bird's eye view can be computed. In order to compute the perspective matrix using [cv::getPerspectiveTransform](https://docs.opencv.org/2.4/modules/imgproc/doc/geometric_transformations.html#getperspectivetransform), the coordinates of four markers points in both coordinate system (camera plane and BEV plane) are required.
+With the bounding box information, the coordinate of athlete's feet can be approximately obtained. By using the perspective matrix from camera image to BEV plane, the coordinate of the athlete under the bird's eye view can be computed. In order to compute the perspective matrix using [cv::getPerspectiveTransform](https://docs.opencv.org/2.4/modules/imgproc/doc/geometric_transformations.html#getperspectivetransform), the coordinates of four badminton corners in both coordinate system (camera plane and BEV plane) are required. For example, for the badminton court used in the example, we need to define a BEV map as the figure below and obtain the corners coordinate (points 1, 5, 18, 22).
+<!-- ![badminton_bev_map](badminton_bev_map.png) -->
+<p align="center">
+    <img src="badminton_bev_map.png" alt="drawing" width="700"/>
+</p>
 
 ### Extracted information in JSON format 
 In this project, the extracted information is stored in JSON format using a popular JSON library [nlohmann/json](https://github.com/nlohmann/json). The content of the extracted information in JSON includes: 
