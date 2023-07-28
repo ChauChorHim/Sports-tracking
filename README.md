@@ -1,5 +1,5 @@
 # Sports-tracking
-This README is used for helping reader to install and build this project. Some interesting description for this project is [here](doc/documentation.md).
+This README is a guide to install and build the Sports-tracking project. For interesting project details, check [here](doc/documentation.md).
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -24,43 +24,43 @@ This README is used for helping reader to install and build this project. Some i
 </details>
 
 ## About The Project
-This project is used for the code challenge provided by [Swiss Timing](https://swisstiming.com/). The task of code challenge is to build a system to process a short sport video with moving athletes and extract the information of the athletes. The development environment is maintained using [Docker](https://www.docker.com/) and the project is built using [CMake](https://cmake.org/). [OpenCV](https://opencv.org/) is the major library used to bootstrap this project.
+The Sports-tracking project is a code challenge provided by [Swiss Timing](https://swisstiming.com/). It aims to build an efficient and fit-for-purpose solution to process short sports videos with moving athletes and extract information about the athletes. The development environment is maintained using [Docker](https://www.docker.com/), and the project is built using [CMake](https://cmake.org/). [OpenCV](https://opencv.org/) is the primary library used in this project.
 
 ![Results](doc/playback.gif)
 
-This project is finished in a short time. Therefore, bugs or issues probably exist and please suggest changes by opening an issues.
+As this project was completed in a short time, there might be some bugs or issues. Feel free to suggest changes or report issues by opening an issue.
+
 
 
 ## Getting Started
-This instruction is mainly for users using Windows system. Users using other platform should follow a similar setup with differences in [setting GUI applications communication](https://cuneyt.aliustaoglu.biz/en/running-gui-applications-in-docker-on-windows-linux-mac-hosts/) between docker container and the host.
+This section provides instructions for setting up the project on a Windows system. Users on other platforms should follow similar steps with differences in [setting GUI applications communication](https://cuneyt.aliustaoglu.biz/en/running-gui-applications-in-docker-on-windows-linux-mac-hosts/) between the Docker container and the host.
+
 ### Prerequisites
-* Download and install Docker
-* Dowoload and install [VcXsrv Windows X Server](https://sourceforge.net/projects/vcxsrv/), please read [doc](https://cuneyt.aliustaoglu.biz/en/running-gui-applications-in-docker-on-windows-linux-mac-hosts/)
-* Prepare a short sport video clip
+To run this project, you need to have the following:
+* [Docker](https://www.docker.com/) - Download and install Docker.
+* [VcXsrv Windows X Server](https://sourceforge.net/projects/vcxsrv/) - Install the X Server for GUI communication. For more details, read the [documentation](https://cuneyt.aliustaoglu.biz/en/running-gui-applications-in-docker-on-windows-linux-mac-hosts/).
+* A short sport video clip for testing.
 
 ### Installation
-The first step is to obtain the docker container and setup the volumes between container and the host. The OpenCV version uesd in this docker image is 4.5.4.
+Follow these steps to set up the project:
+
+1. Pull the Docker image with OpenCV version 4.5.4:
 ```
-// pull docker image with OpenCV 
 docker pull adnrv/opencv:latest
-
-// run docker container
-docker run -t -d --name sports-tracking --mount type=bind,source=$YOUR_PROJECT_PATH$,target=/home/sports-tracking -e DISPLAY=$YOUR_IP_ADDRESS$:0.0 adnrv/opencv
 ```
 
-The second step is to obtain the pretrained YOLOv5 model and transfer it to ONNX model. The environment setup is omitted and you could follow the [official instruction](https://docs.ultralytics.com/quickstart/).
+2. Run the Docker container with mounted volumes:
 ```
-// download the YOLOv5 repository
+Run the Docker container with mounted volumes:
+```
+3. Obtain the pretrained YOLOv5 model and convert it to the ONNX format:
+```
 git clone https://github.com/ultralytics/yolov5
-
-// download the official pretrained YOLOv5 model weights 
 wget https://github.com/ultralytics/YOLOv5/releases/download/v6.1/YOLOv5s.pt
-
-// convert the PyTorch pretrained model to ONNX model
 python export.py --weights YOLOv5s.pt --simplify --opset 12 --include onnx
 ```
 
-The third step is to download this repository and build it.
+4. Download this repository and build it:
 ```
 git clone https://github.com/ChauChorHim/Sports-tracking.git
 mkdir build && cd build
@@ -70,6 +70,7 @@ cmake .. && make -j4
 ## Usage
 
 ### Configuration file
+Edit the configuration file `config/badminton.json` with the following parameters:
 * path_to_video: relative path to the video for processing
 * path_to_onnx: relative path to the onnx weights of YOLOv5 model
 * path_to_save_video: relative path to the processed video and .avi is the only supported format for now
@@ -80,8 +81,10 @@ cmake .. && make -j4
 * bev_map_size_h: the height of BEV map
 * others - input_width_, input_height_, score_threshold_, nms_threshold_, confidence_threshold_ are parameters of YOLOv5. Please check the documentation of YOLOv5 for more details
 
+Edit the configuration file `config/badminton_bev_map.json` to describe the points and connections in the BEV map. For detailed description, please check [here](doc/documentation.md).
+
 ### Run the codes
-Before running the executable file, please make sure the GUI communication between the docker and the host is OK. If GUI communication is unable to setup, please enable the "disable_gui" in the config file.
+Before running the executable file, ensure that the GUI communication between the Docker container and the host is set up correctly. If GUI communication is not possible, enable the "disable_gui" option in the config file.
 ```
 // Run the main executable file with argument indicating the path to the json file
 cd $YOUR_PROJECT_PATH$/bin
@@ -89,4 +92,4 @@ main /home/sports-tracking/config/badminton.json
 ```
 
 ## Documentation
-Please refer [doc/documentation.md](doc/documentation.md).
+For more detailed documentation and information about the project, refer to [doc/documentation.md](doc/documentation.md).
