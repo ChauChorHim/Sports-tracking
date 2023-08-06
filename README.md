@@ -51,7 +51,10 @@ docker pull adnrv/opencv:latest
 
 2. Run the Docker container with mounted volumes:
 ```
-Run the Docker container with mounted volumes:
+docker run -t -d 
+--name sports-tracking 
+--mount type=bind,source=$YOUR_PROJECT_PATH$,target=/home/sports-tracking 
+-e DISPLAY=$YOUR_IP_ADDRESS$:0.0 adnrv/opencv
 ```
 3. Obtain the pretrained YOLOv5 model and convert it to the ONNX format:
 ```
