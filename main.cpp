@@ -20,18 +20,20 @@ int main(int argc, char** argv)
 
     auto yoloDetector = st::YOLOV5Detector(video_capturer, config_data);
 
-    while (1)
     {
-        auto cur_frame = yoloDetector.HumanDetector::detect();
-        if(true == yoloDetector.isEnd())
-            break;
-        if (false == config_data["disable_gui"].get<bool>())
+        st::ModuleTimer timer = st::ModuleTimer("while function");
+        while (1)
         {
-            cv::namedWindow("Real-time Display", cv::WINDOW_NORMAL);
-            cv::imshow("Real-time Display", cur_frame);
-            cv::waitKey(50);   
+            auto cur_frame = yoloDetector.HumanDetector::detect();
+            if(true == yoloDetector.isEnd())
+                break;
+            if (false == config_data["disable_gui"].get<bool>())
+            {
+                cv::namedWindow("Real-time Display", cv::WINDOW_NORMAL);
+                cv::imshow("Real-time Display", cur_frame);
+                cv::waitKey(50);   
+            }
         }
-        
     }
 
     auto psave_images = yoloDetector.getImages();
