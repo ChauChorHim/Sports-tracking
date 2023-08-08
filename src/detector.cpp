@@ -37,14 +37,26 @@ namespace st
             }
             std::cout << "BEV map activated, map_BEV_size: " << map_BEV_.size() << "\n";
 
-            // From the image
-            cv::Point2f src[4] = {
-                cv::Point2f(545, 435), cv::Point2f(1370, 435), cv::Point2f(365, 1070), cv::Point2f(1565, 1060) 
-            };
+            // From the image and from the bird's eye view map
+            std::vector<cv::Point2f> src_pts;
+            std::vector<cv::Point2f> dst_pts;
+            for (uint8_t idx = 1; idx <= 4; ++idx)
+            {
+                std::ostringstream oss;
+                oss << static_cast<int>(idx);
+                
+                std::string pt_name = "src_" + oss.str();
+                src_pts.push_back(cv::Point2f(map_BEV_json["perspective"][pt_name.c_str()]["x"].get<int>(), 
+                                              map_BEV_json["perspective"][pt_name.c_str()]["y"].get<int>()));
 
-            // From bird's eye view
+                pt_name = "dst_" + oss.str();
+                dst_pts.push_back(pts[map_BEV_json["perspective"][pt_name.c_str()].get<int>() - 1]);
+            }
+            cv::Point2f src[4] = {
+                src_pts[0], src_pts[1], src_pts[2], src_pts[3]
+            };
             cv::Point2f dst[4] = {
-                pts[0], pts[4], pts[17], pts[21]
+                dst_pts[0], dst_pts[1], dst_pts[2], dst_pts[3]
             };
 
             // Calculate the perspective transformation matrix
